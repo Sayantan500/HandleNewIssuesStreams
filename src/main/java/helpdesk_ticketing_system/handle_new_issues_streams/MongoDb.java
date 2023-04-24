@@ -1,6 +1,8 @@
 package helpdesk_ticketing_system.handle_new_issues_streams;
 
-import com.google.gson.Gson;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.*;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -10,7 +12,7 @@ import org.bson.Document;
 
 public class MongoDb {
     private final MongoCollection<Document> mongoCollection;
-    private final Gson gson;
+    private final ObjectMapper objectMapper;
 
     public MongoDb() {
         String connectionUri = System.getenv("mongodb_connection_uri");
@@ -28,11 +30,19 @@ public class MongoDb {
         );
 
         mongoCollection = mongoClient.getDatabase(database).getCollection(collection);
-        gson = new Gson();
+        objectMapper = new ObjectMapper();
     }
-    boolean addData(Issue issue)
+    boolean addData(Issue issue, Context context)
     {
-        InsertOneResult result = mongoCollection.insertOne(Document.parse(gson.toJson(issue)));
+        InsertOneResult result;
+        try {
+            result = mongoCollection.insertOne(Document.parse(objectMapper.writeValueAsString(issue)));
+        } catch (JsonProcessingException e) {
+            context.getLogger().log(
+                    "Exception Class : " + e.getClass().getName() + "\tMessage : " + e.getMessage() + "\n"
+            );
+            throw new RuntimeException(e);
+        }
         return result.wasAcknowledged();
     }
 }

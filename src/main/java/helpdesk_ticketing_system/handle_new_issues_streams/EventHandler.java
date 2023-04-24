@@ -23,12 +23,11 @@ public class EventHandler implements RequestHandler<Map<String,Object>,Object> {
         Issue issue = new Issue();
         issue.set_id((String)fullDoc.get("_id"));
         issue.setPostedOn((Long)fullDoc.get("posted_on"));
-        issue.setStatus((String)fullDoc.get("status"));
         issue.setSubmitted_by((String)fullDoc.get("submitted_by"));
         issue.setSubject((String)fullDoc.get("subject"));
         issue.setDescription((String)fullDoc.get("description"));
 
-        if(mongoDb.addData(issue))
+        if(mongoDb.addData(issue,context))
             return HttpURLConnection.HTTP_OK;
 
         return HttpURLConnection.HTTP_UNAVAILABLE;
