@@ -1,0 +1,11 @@
+{
+  "operationType": "insert",
+  "inserted_data": {
+    "_id": "ISS2023423291307183536",
+    "submitted_by": "MongoDB",
+    "subject": "Test MongoDB stream with AWS EventBridge",
+    "description": "Sending issue from IntelliJ --> MongoDB; then MongoDB sends insert change streams to AWS EvenetBridge; AWS EventBridge --> DynamoDB.",
+    "status": "DELIVERED",
+    "posted_on": 1682229130718
+  }
+}
