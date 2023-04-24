@@ -19,7 +19,6 @@ public class MongoDb {
         String database = System.getenv("mongodb_database");
         String collection = System.getenv("mongodb_collection");
 
-        System.out.println("connectionUri = " + connectionUri);
         String connectionString = String.format(connectionUri, username, password);
         MongoClient mongoClient = MongoClients.create(
                 MongoClientSettings.builder()
